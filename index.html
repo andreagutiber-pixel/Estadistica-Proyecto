@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Analizador estadístico profesional con detección automática de tipo de variable">
+    <meta name="keywords" content="estadística, análisis de datos, gráficos, frecuencias">
+    <meta name="author" content="Jhonar De Arco, Sally Gutiérrez & Martin Solano">
+    
+    <title>Analizador Estadístico Profesional</title>
+
+    <link rel="stylesheet" href="estilos.css">
+    
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-left">
+        <h1>📊 Analizador Estadístico Profesional</h1>
+        <p class="subtitulo">Proyecto: <strong>Jhonar De Arco, Sally Gutiérrez &amp; Martin Solano</strong></p>
+    </div>
+
+    <div class="header-right">
+        <button id="modoNoche" class="btn btn-ghost" aria-pressed="false" aria-label="Cambiar modo de visualización">
+            🌙 Modo noche
+        </button>
+    </div>
+</header>
+
+<main class="layout">
+
+    <section class="card card-full" aria-labelledby="descripcion-titulo">
+        <h2 id="descripcion-titulo">🎯 Descripción del Sistema</h2>
+        <p>
+            <strong>Analizador estadístico inteligente</strong> que detecta automáticamente el tipo de variable 
+            (cuantitativa/cualitativa, nominal/ordinal) y calcula todos los estadísticos relevantes.
+            Incluye análisis visual con gráficos interactivos, tabla de frecuencias, y exportación a PDF/Excel.
+        </p>
+    </section>
+
+    <section class="card card-col" aria-labelledby="ingreso-titulo">
+        <h3 id="ingreso-titulo">📝 Ingreso de Datos</h3>
+        <label for="datosInput" class="label">
+            Introduce números o texto separados por comas, espacios o saltos de línea
+        </label>
+        <textarea 
+            id="datosInput" 
+            placeholder="Ejemplo: 5, 8, 10, 12, 15&#10;o&#10;Malo, Bueno, Regular, Excelente"
+            aria-describedby="datos-ayuda"
+        ></textarea>
+        <span id="datos-ayuda" class="sr-only">
+            Ingresa tus datos separados por comas, espacios o saltos de línea
+        </span>
+        
+        <div class="tipo-dato">
+            <label for="tipoDato"><strong>⚙️ Tipo de cálculo:</strong></label>
+            <select id="tipoDato" aria-label="Seleccionar tipo de cálculo estadístico">
+                <option value="muestral">Muestral (n-1) - Encuestas/Muestras</option>
+                <option value="poblacional">Poblacional (N) - Censos/Totales</option>
+            </select>
+        </div>
+
+        <div class="actions">
+            <button id="procesarBtn" class="btn" aria-label="Analizar datos ingresados">
+                🚀 Analizar Datos
+            </button>
+            <button id="limpiarBtn" class="btn btn-outline" aria-label="Limpiar todos los datos">
+                🗑️ Limpiar
+            </button>
+        </div>
+    </section>
+
+    <section class="card card-col" aria-labelledby="importar-titulo">
+        <h3 id="importar-titulo">📥 Importar Archivos</h3>
+
+        <div 
+            class="drop-zone" 
+            id="dropZone" 
+            role="button" 
+            tabindex="0"
+            aria-label="Zona para arrastrar archivos o hacer clic para seleccionar"
+        >
+            <p style="margin:0; font-size:1.1rem;">📎 Arrastra archivos aquí</p>
+            <p style="margin:8px 0 0; color:var(--muted); font-size:0.9rem;">
+                o haz clic para seleccionar
+            </p>
+            <input 
+                type="file" 
+                id="archivoInput" 
+                accept=".txt, .csv, .xlsx, .xls, .json" 
+                style="display:none;"
+                aria-label="Seleccionar archivo para importar"
+            >
+        </div>
+
+        <div style="margin-top:16px; padding:12px; background:rgba(46,125,50,0.05); border-radius:8px; border:1px solid rgba(46,125,50,0.2);">
+            <h4 style="margin:0 0 8px 0; color:var(--success);">✨ Datos de Prueba</h4>
+            <button 
+                id="demoBtn" 
+                class="btn btn-green" 
+                style="width:100%;"
+                aria-label="Generar datos aleatorios de ejemplo"
+            >
+                🎲 Generar Datos Aleatorios
+            </button>
+        </div>
+
+        <div class="actions" style="margin-top:16px;">
+            <button 
+                id="excelBtn" 
+                class="btn btn-outline"
+                aria-label="Exportar resultados a Excel"
+            >
+                📊 Exportar Excel
+            </button>
+            <button 
+                id="pdfBtn" 
+                class="btn btn-red"
+                aria-label="Exportar resultados a PDF"
+            >
+                📄 Exportar PDF
+            </button>
+        </div>
+    </section>
+
+    <section class="card results-panel" aria-labelledby="resultados-titulo">
+        <h3 id="resultados-titulo">📈 Resultados Estadísticos</h3>
+        <div id="resultados" class="resultados-content" role="region" aria-live="polite">
+            <p style="color:var(--muted); font-style:italic;">
+                Ingresa datos y presiona "Analizar Datos" para ver los resultados...
+            </p>
+        </div>
+        <div 
+            id="analisisInteligente" 
+            style="display:none;" 
+            class="analisis-box"
+            role="region"
+            aria-live="polite"
+        ></div>
+    </section>
+
+    <section class="card card-full" aria-labelledby="tabla-titulo">
+        <h3 id="tabla-titulo">📊 Tabla de Frecuencias</h3>
+        <div id="tablaFrecuencias" class="table-wrap" role="region" aria-live="polite">
+            <p style="color:var(--muted); font-style:italic;">
+                La tabla aparecerá después del análisis...
+            </p>
+        </div>
+    </section>
+
+    <section 
+        id="graficas" 
+        class="card card-full" 
+        style="display:none;"
+        aria-labelledby="graficas-titulo"
+    >
+        <h3 id="graficas-titulo">📉 Visualización Gráfica</h3>
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h4>Histograma / Barras</h4>
+                <canvas 
+                    id="graficoBarras" 
+                    role="img" 
+                    aria-label="Gráfico de barras mostrando frecuencias"
+                ></canvas>
+            </div>
+            <div class="chart-card">
+                <h4>Gráfico Circular</h4>
+                <canvas 
+                    id="graficoPastel" 
+                    role="img" 
+                    aria-label="Gráfico circular mostrando porcentajes"
+                ></canvas>
+            </div>
+            <div class="chart-card" id="boxplotCard" style="display:none;">
+                <h4>Diagrama de Caja (Boxplot)</h4>
+                <canvas 
+                    id="graficoBoxplot" 
+                    role="img" 
+                    aria-label="Diagrama de caja mostrando distribución de datos"
+                ></canvas>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.1/chartjs-plugin-zoom.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@sgratzl/chartjs-chart-boxplot@4.4.0/build/index.umd.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script src="app.js"></script>
+
+<noscript>
+    <div style="position:fixed; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,0.9); color:white; display:flex; align-items:center; justify-content:center; text-align:center; padding:20px; z-index:9999;">
+        <div>
+            <h1>⚠️ JavaScript Requerido</h1>
+            <p>Esta aplicación requiere JavaScript para funcionar correctamente.</p>
+            <p>Por favor, habilita JavaScript en tu navegador.</p>
+        </div>
+    </div>
+</noscript>
+
+</body>
+</html>

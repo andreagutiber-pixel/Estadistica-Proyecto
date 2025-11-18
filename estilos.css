@@ -1,0 +1,497 @@
+/* =========================
+   Variables y reset
+   ========================= */
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+
+:root {
+    /* Colores primarios */
+    --bg: #D7D4CD; /* Fondo general */
+    --text-primary: #1A360D; /* Texto */
+    --input-zone: #748745; /* Zona para ingresar o mostrar los datos (Base de tarjetas y inputs) */
+    --btn-primary: #406868; /* Botones */
+    --btn-text: #FFFFFF; /* Texto botones */
+
+    /* Colores de tablas/resaltado */
+    --table-header: #568787; /* Tablas parte superior (color inicial del degradado) */
+    --table-header-end: #1F5F4A; /* Tablas parte superior (color final del degradado) */
+    --table-body: #F7F4EA; /* Tablas parte inferior */
+
+    /* Colores de estado/feedback (manteniendo funcionalidad) */
+    --danger: #d32f2f;
+    --success: #2e7d32;
+    
+    /* Variables derivadas para contrastes */
+    --card: var(--table-body); /* Tarjetas/Paneles principales (blanco/claro) */
+    --muted: #495d43; /* Texto secundario, ajustado al tema */
+    --accent: #406868; /* Acento, usando color de botón */
+    --accent-strong: #1F5F4A; /* Acento fuerte, usando color de degradado */
+    --border: rgba(26,54,13,0.2); /* Borde claro basado en texto */
+    --radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Instrument Serif', serif; /* Nueva tipografía */
+    background: var(--bg);
+    color: var(--text-primary);
+    transition: background 0.3s ease, color 0.3s ease;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+    font-weight: bold;
+}
+
+/* =========================
+   Header
+   ========================= */
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 18px 22px;
+    max-width: 1400px;
+    margin: 18px auto;
+    flex-wrap: wrap;
+}
+
+.site-header h1 {
+    margin: 0;
+    font-size: 1.35rem;
+    letter-spacing: -0.3px;
+    line-height: 1.3;
+}
+
+.subtitulo {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.header-left,
+.header-right {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* =========================
+   Layout Grid
+   ========================= */
+.layout {
+    max-width: 1400px;
+    margin: 10px auto 60px;
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: min-content;
+    gap: 18px;
+    padding: 0 18px;
+}
+
+.card {
+    background: var(--card);
+    border-radius: var(--radius);
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(15,23,42,0.06);
+    border: 1px solid var(--border);
+    transition: background 0.3s ease, border 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-full {
+    grid-column: 1 / -1;
+}
+
+.card-col {
+    grid-column: span 6;
+}
+
+.results-panel {
+    grid-column: span 6;
+}
+
+@media (max-width: 900px) {
+    .card-col,
+    .results-panel {
+        grid-column: 1 / -1;
+    }
+    
+    .site-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 600px) {
+    .site-header h1 {
+        font-size: 1.2rem;
+    }
+    
+    .layout {
+        padding: 0 12px;
+        gap: 12px;
+    }
+    
+    .card {
+        padding: 14px;
+    }
+}
+
+/* =========================
+   Inputs y botones
+   ========================= */
+label.label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+textarea,
+input[type="text"],
+select {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    font-size: 1rem;
+    font-family: inherit;
+    background: var(--input-zone); /* Color de zona de datos */
+    color: var(--btn-text); /* Texto blanco sobre zona de datos */
+    resize: vertical;
+    min-height: 120px;
+    transition: background 0.3s ease, border 0.3s ease, color 0.3s ease, box-shadow 0.2s ease;
+}
+
+textarea::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+textarea:focus,
+input[type="text"]:focus,
+select:focus {
+    outline: none;
+    border-color: var(--accent-strong);
+    box-shadow: 0 0 0 3px rgba(31, 95, 74, 0.3); /* Sombra de foco ajustada */
+}
+
+select {
+    min-height: auto;
+    cursor: pointer;
+    background: var(--input-zone);
+}
+
+.tipo-dato {
+    margin-top: 12px;
+    padding: 10px;
+    background: rgba(31, 95, 74, 0.1); /* Fondo claro de acento */
+    border-radius: 8px;
+    border: 1px solid rgba(31, 95, 74, 0.3);
+}
+
+.tipo-dato label {
+    color: var(--accent-strong);
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--btn-primary); /* Botón primario */
+    color: var(--btn-text); /* Texto de botón */
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease;
+    white-space: nowrap;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(64, 104, 104, 0.25); /* Sombra de botón ajustada */
+}
+
+.btn:active {
+    transform: translateY(-1px);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid rgba(64, 104, 104, 0.4);
+}
+
+.btn-outline:hover {
+    background: rgba(64, 104, 104, 0.05);
+}
+
+.btn-red {
+    background: var(--danger);
+}
+
+.btn-green {
+    background: var(--success);
+}
+
+.btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid transparent;
+    padding: 8px 12px;
+    border-radius: 8px;
+}
+
+.btn-ghost:hover {
+    background: rgba(0,0,0,0.05);
+    transform: none;
+}
+
+/* =========================
+   Drag & Drop Zone
+   ========================= */
+.drop-zone {
+    border: 2px dashed rgba(64, 104, 104, 0.5); /* Borde basado en color de botón */
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(64, 104, 104, 0.05);
+}
+
+.drop-zone:hover,
+.drop-zone.drag-over {
+    border-color: var(--accent);
+    background: rgba(64, 104, 104, 0.1);
+    transform: scale(1.01);
+}
+
+.drop-zone p {
+    margin: 0;
+}
+
+/* =========================
+   Tabla de frecuencias
+   ========================= */
+.table-wrap {
+    overflow-x: auto;
+    margin-top: 12px;
+}
+
+.table-wrap table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 12px;
+    font-size: 0.95rem;
+}
+
+.table-wrap th,
+.table-wrap td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+}
+
+.table-wrap th {
+    background: linear-gradient(90deg, var(--table-header), var(--table-header-end)); /* Degradado superior */
+    color: var(--btn-text);
+    font-weight: 700;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.table-wrap td {
+    background-color: var(--table-body); /* Fondo claro de la parte inferior */
+}
+
+.table-wrap tbody tr:hover {
+    background: rgba(64, 104, 104, 0.05);
+}
+
+/* Fila de totales */
+.table-wrap tbody tr:last-child {
+    background: rgba(31, 95, 74, 0.2) !important;
+    font-weight: 700;
+}
+
+/* =========================
+   Resultados & badges
+   ========================= */
+.resultados-content p {
+    margin: 6px 0;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.resultados-content strong {
+    color: var(--accent-strong);
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-left: 8px;
+    white-space: nowrap;
+}
+
+/* Colores de badges ajustados */
+.badge-cuantitativo {
+    background: #406868;
+    color: white;
+}
+
+.badge-cualitativo {
+    background: #568787;
+    color: white;
+}
+
+.badge-ordinal {
+    background: #1F5F4A;
+    color: white;
+}
+
+/* =========================
+   Análisis inteligente
+   ========================= */
+.analisis-box {
+    background: linear-gradient(135deg, rgba(31, 95, 74, 0.1), rgba(64, 104, 104, 0.05));
+    border-left: 4px solid var(--accent-strong);
+    padding: 14px;
+    border-radius: 8px;
+    margin-top: 12px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* =========================
+   Gráficas
+   ========================= */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 14px;
+    align-items: start;
+}
+
+.chart-card {
+    padding: 14px;
+    border-radius: 10px;
+    background: var(--card); /* Fondo claro */
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--border);
+}
+
+.chart-card h4 {
+    margin: 0 0 10px 0;
+    font-size: 0.95rem;
+    color: var(--muted);
+}
+
+.chart-card canvas {
+    flex: 1;
+    max-height: 400px;
+}
+
+@media (max-width: 600px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================
+   Modo noche (Mantenido pero con los mismos colores de fondo para simplificar)
+   ========================= 
+   NOTA: La paleta de colores del usuario no incluye un modo oscuro, 
+   por lo que se mantiene la misma paleta visualmente.
+*/
+body.noche {
+    background: var(--bg);
+    color: var(--text-primary);
+}
+
+body.noche .card {
+    background: var(--card);
+    border-color: var(--border);
+    box-shadow: 0 4px 12px rgba(15,23,42,0.06);
+}
+
+body.noche textarea,
+body.noche input[type="text"],
+body.noche select {
+    background: var(--input-zone);
+    color: var(--btn-text);
+    border-color: rgba(255, 255, 255, 0.7);
+}
+
+body.noche textarea:focus,
+body.noche input[type="text"]:focus,
+body.noche select:focus {
+    border-color: var(--accent-strong);
+    box-shadow: 0 0 0 3px rgba(31, 95, 74, 0.3);
+}
+
+body.noche .tipo-dato {
+    background: rgba(31, 95, 74, 0.1);
+    border-color: rgba(31, 95, 74, 0.3);
+}
+
+body.noche .chart-card {
+    background: var(--card);
+    border-color: var(--border);
+}
+
+body.noche .table-wrap th {
+    background: linear-gradient(90deg, var(--table-header), var(--table-header-end));
+}
+
+body.noche .table-wrap tbody tr:hover {
+    background: rgba(64, 104, 104, 0.05);
+}
+
+body.noche .drop-zone {
+    background: rgba(64, 104, 104, 0.05);
+    border-color: rgba(64, 104, 104, 0.5);
+}
+
+body.noche .drop-zone:hover,
+body.noche .drop-zone.drag-over {
+    background: rgba(64, 104, 104, 0.1);
+}
+
+body.noche .resultados-content strong {
+    color: var(--accent-strong);
+}
