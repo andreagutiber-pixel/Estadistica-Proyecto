@@ -2,31 +2,41 @@
    Variables y reset
    ========================= */
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lao+Muang+Don&display=swap');
 
 :root {
-    /* Colores primarios */
+    /* Colores primarios (de la paleta anterior, mantenidos para el fondo/interfaz) */
     --bg: #D7D4CD; /* Fondo general */
-    --text-primary: #1A360D; /* Texto */
+    --text-primary: #1A360D; /* Texto principal */
     --input-zone: #748745; /* Zona para ingresar o mostrar los datos (Base de tarjetas y inputs) */
     --btn-primary: #406868; /* Botones */
     --btn-text: #FFFFFF; /* Texto botones */
 
     /* Colores de tablas/resaltado */
-    --table-header: #568787; /* Tablas parte superior (color inicial del degradado) */
-    --table-header-end: #1F5F4A; /* Tablas parte superior (color final del degradado) */
-    --table-body: #F7F4EA; /* Tablas parte inferior */
+    --table-header: #568787; 
+    --table-header-end: #1F5F4A;
+    --table-body: #F7F4EA; 
 
     /* Colores de estado/feedback (manteniendo funcionalidad) */
     --danger: #d32f2f;
     --success: #2e7d32;
     
     /* Variables derivadas para contrastes */
-    --card: var(--table-body); /* Tarjetas/Paneles principales (blanco/claro) */
-    --muted: #495d43; /* Texto secundario, ajustado al tema */
-    --accent: #406868; /* Acento, usando color de botón */
-    --accent-strong: #1F5F4A; /* Acento fuerte, usando color de degradado */
-    --border: rgba(26,54,13,0.2); /* Borde claro basado en texto */
+    --card: var(--table-body); 
+    --muted: #495d43; 
+    --accent: #406868; 
+    --accent-strong: #1F5F4A; 
+    --border: rgba(26,54,13,0.2); 
     --radius: 12px;
+
+    /* Nuevos colores para las gráficas */
+    --chart-color-1: #1A73E8;
+    --chart-color-2: #4A90E2;
+    --chart-color-3: #34C759;
+    --chart-color-4: #2DB44C;
+    --chart-color-5: #6F6F6F;
+    --chart-color-6: #505050;
 }
 
 * {
@@ -38,16 +48,32 @@
 html, body {
     height: 100%;
     margin: 0;
-    font-family: 'Instrument Serif', serif; /* Nueva tipografía */
+    font-family: 'Lao Muang Don', sans-serif; /* Tipografía para texto general (no título) */
     background: var(--bg);
     color: var(--text-primary);
     transition: background 0.3s ease, color 0.3s ease;
     line-height: 1.6;
 }
 
-h1, h2, h3, h4 {
+/* Tipografía para Títulos y Subtítulos */
+h1, h2, h3, h4,
+.site-header h1,
+.subtitulo {
+    font-family: 'Instrument Serif', serif;
     font-weight: bold;
 }
+
+/* Tipografía para Botones */
+.btn, .btn-outline, .btn-red, .btn-green, .btn-ghost {
+    font-family: 'Kaisei Decol', serif;
+    font-weight: 700;
+}
+
+/* Tipografía para Inputs/Textarea */
+textarea, input[type="text"], select {
+    font-family: 'Lao Muang Don', sans-serif; 
+}
+
 
 /* =========================
    Header
@@ -163,7 +189,6 @@ select {
     border-radius: 10px;
     border: 1px solid var(--border);
     font-size: 1rem;
-    font-family: inherit;
     background: var(--input-zone); /* Color de zona de datos */
     color: var(--btn-text); /* Texto blanco sobre zona de datos */
     resize: vertical;
@@ -221,9 +246,8 @@ select {
     color: var(--btn-text); /* Texto de botón */
     border: none;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 0.95rem;
-    font-family: inherit;
     transition: transform 0.12s ease, box-shadow 0.12s ease, background 0.2s ease;
     white-space: nowrap;
 }
@@ -433,10 +457,9 @@ select {
 }
 
 /* =========================
-   Modo noche (Mantenido pero con los mismos colores de fondo para simplificar)
+   Modo noche 
    ========================= 
-   NOTA: La paleta de colores del usuario no incluye un modo oscuro, 
-   por lo que se mantiene la misma paleta visualmente.
+   Se mantiene la misma paleta visualmente.
 */
 body.noche {
     background: var(--bg);
