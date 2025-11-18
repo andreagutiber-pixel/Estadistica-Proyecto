@@ -30,7 +30,7 @@
     --border: rgba(26,54,13,0.2); 
     --radius: 12px;
 
-    /* Nuevos colores para las gráficas */
+    /* Nuevos colores para las gráficas (Definición en CSS) */
     --chart-color-1: #1A73E8;
     --chart-color-2: #4A90E2;
     --chart-color-3: #34C759;
