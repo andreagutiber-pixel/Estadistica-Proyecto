@@ -453,9 +453,14 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
     const dataFi = tabla.map(t => Number(t.fi));
     const dataPi = tabla.map(t => Number(t.pi));
 
-    // Paleta combinada de 12 colores:
+    // Paleta combinada de 21 colores:
     const mainColor = '#1A73E8'; 
-    const pastelColors = ['#1A73E8', '#4A90E2', '#34C759', '#2DB44C', '#6F6F6F', '#505050', '#6FB1FF', '#0F5FBF', '#1E8F45', '#A5F2C1', '#A9A9A9', '#E8E8E8'];
+    const pastelColors = [
+        '#1A73E8', '#4A90E2', '#34C759', '#2DB44C', '#6F6F6F', '#505050', 
+        '#6FB1FF', '#0F5FBF', '#1E8F45', '#A5F2C1', '#A9A9A9', '#E8E8E8', 
+        '#0D47A1', '#42A5F5', '#90CAF9', '#0B8043', '#66BB6A', '#A5D6A7', 
+        '#424242', '#9E9E9E', '#E0E0E0'
+    ];
 
     const isDark = document.body.classList.contains('noche');
     const textColor = isDark ? '#1A360D' : '#1A360D'; 
@@ -508,12 +513,12 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
         const backgroundColors = dataPi.map((_, i) => pastelColors[i % pastelColors.length]);
 
         chartPastel = new Chart(ctxPastel.getContext('2d'), {
-            type: 'pie', // <-- Revertido a Pie Chart (estilo completo)
+            type: 'pie', // Vuelve al Pie Chart (completo)
             data: {
                 labels: labels,
                 datasets: [{
                     data: dataPi,
-                    backgroundColor: backgroundColors, // Usando la paleta de 12 colores
+                    backgroundColor: backgroundColors, // Usando la paleta de 21 colores
                     borderWidth: 2,
                     borderColor: '#F7F4EA' 
                 }]
@@ -886,10 +891,10 @@ function generarDatosDemo() {
     }
 
     const mensajes = {
-        'nominal': '🎲 Datos Nominales Generados',
-        'ordinal': '📊 Datos Ordinales Generados',
-        'discreta': '🔢 Datos Discretos Generados',
-        'continua': '📏 Datos Continuos Generados'
+        'nominal': ' Datos Nominales Generados',
+        'ordinal': ' Datos Ordinales Generados',
+        'discreta': 'Datos Discretos Generados',
+        'continua': 'Datos Continuos Generados'
     };
 
     Toast.fire({ icon: 'success', title: mensajes[categoriaElegida] });
@@ -1010,51 +1015,6 @@ function limpiarDatos() {
             Toast.fire({ icon: 'success', title: 'Datos limpiados' });
         }
     });
-}
-
-// ===================================
-// MODO NOCHE
-// ===================================
-function toggleModoNoche() {
-    document.body.classList.toggle('noche');
-    const btn = document.getElementById('modoNoche');
-    const isNoche = document.body.classList.contains('noche');
-    
-    if (btn) {
-        btn.textContent = isNoche ? '☀️ Modo día' : '🌙 Modo noche';
-        btn.setAttribute('aria-pressed', isNoche);
-    }
-    
-    localStorage.setItem('modo-noche', isNoche);
-
-    const chartsToUpdate = [chartBarras, chartPastel].filter(c => c);
-    
-    if (chartsToUpdate.length > 0) {
-        // Usando el color de texto principal del tema para las gráficas
-        const textColor = isNoche ? '#1A360D' : '#1A360D'; 
-        const gridColor = 'rgba(26,54,13,0.1)';
-
-        chartsToUpdate.forEach(chart => {
-            if (!chart) return;
-            
-            if (chart.options.scales) {
-                Object.keys(chart.options.scales).forEach(key => {
-                    if (chart.options.scales[key].ticks) {
-                        chart.options.scales[key].ticks.color = textColor;
-                    }
-                    if (chart.options.scales[key].grid) {
-                        chart.options.scales[key].grid.color = gridColor;
-                    }
-                });
-            }
-            
-            if (chart.options.plugins?.legend?.labels) {
-                chart.options.plugins.legend.labels.color = textColor;
-            }
-            
-            chart.update();
-        });
-    }
 }
 
 // ===================================
