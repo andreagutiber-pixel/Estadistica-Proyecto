@@ -18,7 +18,7 @@
 
 <header class="site-header">
     <div class="header-left">
-        <h1>📊 Analizador Estadístico Profesional</h1>
+        <h1> Analizador De Datos Estadísticos </h1>
         <p class="subtitulo">Proyecto: <strong>Jhonar De Arco, Sally Gutiérrez &amp; Martin Solano</strong></p>
     </div>
 
@@ -32,7 +32,7 @@
 <main class="layout">
 
     <section class="card card-full" aria-labelledby="descripcion-titulo">
-        <h2 id="descripcion-titulo">🎯 Descripción del Sistema</h2>
+        <h2 id="descripcion-titulo"> Descripción del Sistema</h2>
         <p>
             <strong>Analizador estadístico inteligente</strong> que detecta automáticamente el tipo de variable 
             (cuantitativa/cualitativa, nominal/ordinal) y calcula todos los estadísticos relevantes.
@@ -55,7 +55,7 @@
         </span>
         
         <div class="tipo-dato">
-            <label for="tipoDato"><strong>⚙️ Tipo de cálculo:</strong></label>
+            <label for="tipoDato"><strong> Tipo de cálculo:</strong></label>
             <select id="tipoDato" aria-label="Seleccionar tipo de cálculo estadístico">
                 <option value="muestral">Muestral (n-1) - Encuestas/Muestras</option>
                 <option value="poblacional">Poblacional (N) - Censos/Totales</option>
@@ -96,7 +96,6 @@
         </div>
 
         <div style="margin-top:16px; padding:12px; background:rgba(46,125,50,0.05); border-radius:8px; border:1px solid rgba(46,125,50,0.2);">
-            <h4 style="margin:0 0 8px 0; color:var(--success);">✨ Datos de Prueba</h4>
             <button 
                 id="demoBtn" 
                 class="btn btn-green" 
@@ -156,7 +155,7 @@
         style="display:none;"
         aria-labelledby="graficas-titulo"
     >
-        <h3 id="graficas-titulo">📉 Visualización Gráfica</h3>
+        <h3 id="graficas-titulo"> Visualización Gráfica</h3>
         <div class="charts-grid">
             <div class="chart-card">
                 <h4>Histograma / Barras</h4>
@@ -174,16 +173,6 @@
                     aria-label="Gráfico circular mostrando porcentajes"
                 ></canvas>
             </div>
-            <div class="chart-card" id="boxplotCard" style="display:none;">
-                <h4>Diagrama de Caja (Boxplot)</h4>
-                <canvas 
-                    id="graficoBoxplot" 
-                    role="img" 
-                    aria-label="Diagrama de caja mostrando distribución de datos"
-                ></canvas>
-            </div>
-        </div>
-    </section>
 
 </main>
 
@@ -212,4 +201,5 @@
 </noscript>
 
 </body>
+
 </html>
