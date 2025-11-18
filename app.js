@@ -552,6 +552,105 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
 }
 
 // ===================================
+// GENERAR GRÁFICOS
+// ===================================
+function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
+    const labels = tabla.map(t => String(t.x));
+    const dataFi = tabla.map(t => Number(t.fi));
+    const dataPi = tabla.map(t => Number(t.pi));
+
+    // Colores base definidos por el usuario
+    const mainColor = '#1A360D'; // linea de la grafica (Texto principal)
+    const pastelColors = ['#71AABD', '#42921D', '#24CB80', '#71AABD']; // Gráficas de pastel (Ajuste de repetición)
+
+    const isDark = document.body.classList.contains('noche');
+    // Usamos el color de texto principal del tema, ya que el fondo es claro
+    const textColor = isDark ? '#1A360D' : '#1A360D'; 
+    const gridColor = 'rgba(26,54,13,0.1)'; // Líneas de grid muy sutiles
+
+    if (chartBarras) chartBarras.destroy();
+    if (chartPastel) chartPastel.destroy();
+
+    const ctxBarras = document.getElementById('graficoBarras');
+    if (ctxBarras) {
+        chartBarras = new Chart(ctxBarras.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Frecuencia',
+                    data: dataFi,
+                    // Color de barra principal ajustado al tema
+                    backgroundColor: 'rgba(64, 104, 104, 0.8)', 
+                    borderColor: '#406868',
+                    borderWidth: 2,
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    datalabels: { display: false }
+                },
+                scales: {
+                    y: { 
+                        beginAtZero: true,
+                        ticks: { color: textColor },
+                        grid: { color: gridColor }
+                    },
+                    x: {
+                        ticks: { color: textColor },
+                        grid: { display: false }
+                    }
+                }
+            }
+        });
+    }
+
+    const ctxPastel = document.getElementById('graficoPastel');
+    if (ctxPastel) {
+        // Asignación de colores de pastel
+        const backgroundColors = dataPi.map((_, i) => pastelColors[i % pastelColors.length]);
+
+        chartPastel = new Chart(ctxPastel.getContext('2d'), {
+            type: 'pie', // <--- ¡CORREGIDO A PIE para ser completo!
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: dataPi,
+                    backgroundColor: backgroundColors,
+                    borderWidth: 2,
+                    borderColor: '#F7F4EA' // Borde claro de la tabla inferior
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: { 
+                            color: textColor,
+                            boxWidth: 15,
+                            padding: 10
+                        }
+                    },
+                    datalabels: { display: false }
+                }
+            }
+        });
+    }
+
+    const graficasEl = document.getElementById('graficas');
+    if (graficasEl) {
+        graficasEl.style.display = 'block';
+        graficasEl.classList.add('fade-in');
+    }
+}
+
+// ===================================
 // EXPORTAR A EXCEL
 // ===================================
 function exportarExcel() {
@@ -1146,3 +1245,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
