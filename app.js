@@ -1021,14 +1021,8 @@ function limpiarDatos() {
 // EVENTOS DEL DOM
 // ===================================
 document.addEventListener('DOMContentLoaded', () => {
-    // Modo noche inicial
-    if (localStorage.getItem('modo-noche') === 'true') {
-        document.body.classList.add('noche');
-        const modoNocheBtn = document.getElementById('modoNoche');
-        if (modoNocheBtn) modoNocheBtn.textContent = '☀️ Modo día';
-    }
-
-    // Botones principales
+    
+// Botones principales
     const procesarBtn = document.getElementById('procesarBtn');
     const limpiarBtn = document.getElementById('limpiarBtn');
     const excelBtn = document.getElementById('excelBtn');
