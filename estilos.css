@@ -172,7 +172,7 @@ textarea, input[type="text"], select {
 
 @media (max-width: 600px) {
     .site-header h1 {
-        font-size: 4.0rem;
+        font-size: 7.0rem;
     }
     
     .layout {
@@ -547,4 +547,5 @@ select {
         transition-duration: 0.01ms !important;
     }
 }
+
 
