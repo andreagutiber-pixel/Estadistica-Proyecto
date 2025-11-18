@@ -30,7 +30,7 @@
     --border: rgba(26,54,13,0.2); 
     --radius: 12px;
 
-    /* Nuevos colores para las gráficas (Paleta Combinada) */
+    /* Nuevos colores para las gráficas (Paleta Combinada de 21 colores) */
     --chart-color-1: #1A73E8;
     --chart-color-2: #4A90E2;
     --chart-color-3: #34C759;
@@ -43,6 +43,15 @@
     --chart-color-10: #A5F2C1;
     --chart-color-11: #A9A9A9;
     --chart-color-12: #E8E8E8;
+    --chart-color-13: #0D47A1;
+    --chart-color-14: #42A5F5;
+    --chart-color-15: #90CAF9;
+    --chart-color-16: #0B8043;
+    --chart-color-17: #66BB6A;
+    --chart-color-18: #A5D6A7;
+    --chart-color-19: #424242;
+    --chart-color-20: #9E9E9E;
+    --chart-color-21: #E0E0E0;
 }
 
 * {
@@ -70,7 +79,7 @@ h1, h2, h3, h4,
 }
 
 /* Tipografía para Botones */
-.btn, .btn-outline, .btn-red, .btn-green, .btn-ghost {
+.btn, .btn-outline, .btn-red, .btn-green {
     font-family: 'Kaisei Decol', serif;
     font-weight: 700;
 }
@@ -163,7 +172,7 @@ textarea, input[type="text"], select {
 
 @media (max-width: 600px) {
     .site-header h1 {
-        font-size: 1.2rem;
+        font-size: 2.3rem;
     }
     
     .layout {
@@ -291,18 +300,7 @@ select {
     background: var(--success);
 }
 
-.btn-ghost {
-    background: transparent;
-    color: var(--muted);
-    border: 1px solid transparent;
-    padding: 8px 12px;
-    border-radius: 8px;
-}
-
-.btn-ghost:hover {
-    background: rgba(0,0,0,0.05);
-    transform: none;
-}
+/* Se elimina .btn-ghost */
 
 /* =========================
    Drag & Drop Zone
@@ -462,65 +460,90 @@ select {
     }
 }
 
+/* Se elimina el bloque de Modo Noche (body.noche) */
+
 /* =========================
-   Modo noche 
-   ========================= 
-   Se mantiene la misma paleta visualmente.
-*/
-body.noche {
-    background: var(--bg);
-    color: var(--text-primary);
+   Animaciones
+   ========================= */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-body.noche .card {
-    background: var(--card);
-    border-color: var(--border);
-    box-shadow: 0 4px 12px rgba(15,23,42,0.06);
+.fade-in {
+    animation: fadeIn 0.4s ease;
 }
 
-body.noche textarea,
-body.noche input[type="text"],
-body.noche select {
-    background: var(--input-zone);
-    color: var(--btn-text);
-    border-color: rgba(255, 255, 255, 0.7);
+/* =========================
+   Scrollbar personalizado
+   ========================= */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
 }
 
-body.noche textarea:focus,
-body.noche input[type="text"]:focus,
-body.noche select:focus {
-    border-color: var(--accent-strong);
-    box-shadow: 0 0 0 3px rgba(31, 95, 74, 0.3);
+::-webkit-scrollbar-track {
+    background: rgba(0,0,0,0.05);
+    border-radius: 4px;
 }
 
-body.noche .tipo-dato {
-    background: rgba(31, 95, 74, 0.1);
-    border-color: rgba(31, 95, 74, 0.3);
+::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 4px;
 }
 
-body.noche .chart-card {
-    background: var(--card);
-    border-color: var(--border);
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(0,0,0,0.3);
 }
 
-body.noche .table-wrap th {
-    background: linear-gradient(90deg, var(--table-header), var(--table-header-end));
+/* Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,0,0,0.2) rgba(0,0,0,0.05);
 }
 
-body.noche .table-wrap tbody tr:hover {
-    background: rgba(64, 104, 104, 0.05);
+/* =========================
+   Utilidades
+   ========================= */
+.text-center {
+    text-align: center;
 }
 
-body.noche .drop-zone {
-    background: rgba(64, 104, 104, 0.05);
-    border-color: rgba(64, 104, 104, 0.5);
+.mt-1 { margin-top: 0.5rem; }
+.mt-2 { margin-top: 1rem; }
+.mt-3 { margin-top: 1.5rem; }
+
+.mb-1 { margin-bottom: 0.5rem; }
+.mb-2 { margin-bottom: 1rem; }
+.mb-3 { margin-bottom: 1.5rem; }
+
+/* =========================
+   Accesibilidad
+   ========================= */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
 }
 
-body.noche .drop-zone:hover,
-body.noche .drop-zone.drag-over {
-    background: rgba(64, 104, 104, 0.1);
-}
-
-body.noche .resultados-content strong {
-    color: var(--accent-strong);
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
