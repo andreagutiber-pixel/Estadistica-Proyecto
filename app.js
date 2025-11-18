@@ -12,7 +12,8 @@ const Toast = Swal.mixin({
 let datosActualesGlobal = {};
 let chartBarras = null;
 let chartPastel = null;
-let chartBoxplot = null;
+// Se elimina chartBoxplot
+// let chartBoxplot = null;
 
 // ===================================
 // MÓDULO ESTADÍSTICA (LÓGICA PURA)
@@ -279,7 +280,7 @@ async function procesarDatos(modoAutomatico = false) {
         desviacionStr = desviacion.toFixed(2);
         cvStr = coefVariacion.toFixed(2) + '%';
 
-        // INICIO MODIFICACIÓN (Interpretación Cuantitativa sin dispersión)
+        // Interpretación Cuantitativa simplificada
         interpretacion = `
             <strong>📊 Análisis Automático:</strong><br>
             Se analizaron <strong>${datosNum.length} datos numéricos</strong>. 
@@ -287,7 +288,6 @@ async function procesarDatos(modoAutomatico = false) {
             El coeficiente de variación es del <strong>${cvStr}</strong>.
             Los datos varían en un rango de <strong>${rangoStr}</strong> unidades.
         `;
-        // FIN MODIFICACIÓN
 
         datosActualesGlobal = {
             datos: datosNum,
@@ -315,7 +315,7 @@ async function procesarDatos(modoAutomatico = false) {
 
         const topCat = tabla[0];
         
-        // INICIO MODIFICACIÓN (Interpretación Cualitativa simplificada)
+        // Interpretación Cualitativa simplificada
         interpretacion = `
             <strong>📝 Análisis Automático:</strong><br>
             Se analizaron <strong>${tabla.length} categorías</strong> diferentes.
@@ -323,7 +323,6 @@ async function procesarDatos(modoAutomatico = false) {
         if (topCat && tabla.length > 1 && topCat.fi !== tabla[tabla.length - 1].fi) {
              interpretacion += `<br>La categoría predominante es <strong>"${topCat.x}"</strong> con ${topCat.pi}%.`;
         }
-        // FIN MODIFICACIÓN
 
         mediaStr = rangoStr = varianzaStr = desviacionStr = cvStr = "--";
         modaStr = modaObj.valor;
@@ -360,7 +359,6 @@ async function procesarDatos(modoAutomatico = false) {
 function mostrarResultados(media, mediana, moda, rango, varianza, desviacion, cv, badge, esPoblacion) {
     const metodoCalculo = esPoblacion ? 'Método Poblacional' : 'Método Muestral';
     
-    // ATENCIÓN: Se eliminan los botones 'help-btn' que llamaban a verFormula.
     const html = `
         <div style="margin-bottom:16px; display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
             ${badge}
@@ -449,7 +447,6 @@ function mostrarTablaFrecuencias(tabla) {
     tablaEl.classList.add('fade-in');
 }
 
-
 // ===================================
 // GENERAR GRÁFICOS
 // ===================================
@@ -460,7 +457,7 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
 
     // Colores base definidos por el usuario
     const mainColor = '#1A360D'; // linea de la grafica (Texto principal)
-    const pastelColors = ['#71AABD', '#71AABD', '#42921D', '#24CB80']; // Gráficas de pastel
+    const pastelColors = ['#71AABD', '#42921D', '#24CB80', '#71AABD']; // Gráficas de pastel (Ajuste de repetición)
 
     const isDark = document.body.classList.contains('noche');
     // Usamos el color de texto principal del tema, ya que el fondo es claro
@@ -469,7 +466,7 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
 
     if (chartBarras) chartBarras.destroy();
     if (chartPastel) chartPastel.destroy();
-    if (chartBoxplot) chartBoxplot.destroy();
+    // if (chartBoxplot) chartBoxplot.destroy(); <-- Eliminado
 
     const ctxBarras = document.getElementById('graficoBarras');
     if (ctxBarras) {
@@ -480,7 +477,7 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
                 datasets: [{
                     label: 'Frecuencia',
                     data: dataFi,
-                    // Color de barra principal
+                    // Color de barra principal ajustado al tema
                     backgroundColor: 'rgba(64, 104, 104, 0.8)', 
                     borderColor: '#406868',
                     borderWidth: 2,
@@ -515,7 +512,7 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
         const backgroundColors = dataPi.map((_, i) => pastelColors[i % pastelColors.length]);
 
         chartPastel = new Chart(ctxPastel.getContext('2d'), {
-            type: 'doughnut',
+            type: 'pie', // <-- CAMBIADO de 'doughnut' a 'pie' (completo)
             data: {
                 labels: labels,
                 datasets: [{
@@ -543,79 +540,9 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
         });
     }
 
-    const boxplotCard = document.getElementById('boxplotCard');
-    if (esCuantitativa && datosRaw.length > 0 && boxplotCard) {
-        boxplotCard.style.display = 'flex';
-        
-        const ctxBox = document.getElementById('graficoBoxplot');
-        if (ctxBox && typeof Chart.controllers.boxplot !== 'undefined') {
-            const jitterFactor = Math.min(0.9, 0.4 + (datosRaw.length / 60) * 0.5);
-            const scatterData = datosRaw.map(val => ({
-                x: val,
-                y: ((Math.random() * 2.0) - 1.0) * jitterFactor
-            }));
-
-            chartBoxplot = new Chart(ctxBox.getContext('2d'), {
-                type: 'bar',
-                data: {
-                    labels: [''],
-                    datasets: [
-                        {
-                            type: 'boxplot',
-                            label: 'Distribución',
-                            data: [datosRaw],
-                            // Color principal ajustado
-                            backgroundColor: 'rgba(64, 104, 104, 0.3)',
-                            borderColor: '#406868',
-                            borderWidth: 2,
-                            itemRadius: 0,
-                            outlierColor: 'transparent',
-                            coef: Number.POSITIVE_INFINITY,
-                            barPercentage: 0.6
-                        },
-                        {
-                            type: 'scatter',
-                            label: 'Datos',
-                            data: scatterData,
-                            // Color secundario o de dispersión
-                            backgroundColor: mainColor, 
-                            pointRadius: 4,
-                            yAxisID: 'y'
-                        }
-                    ]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    indexAxis: 'y',
-                    scales: {
-                        x: {
-                            type: 'linear',
-                            beginAtZero: false,
-                            grace: '10%',
-                            ticks: { color: textColor },
-                            grid: { color: gridColor }
-                        },
-                        y: {
-                            min: -1.1,
-                            max: 1.1,
-                            ticks: { display: false },
-                            grid: { display: false }
-                        }
-                    },
-                    plugins: {
-                        legend: { 
-                            display: true,
-                            labels: { color: textColor }
-                        },
-                        datalabels: { display: false }
-                    }
-                }
-            });
-        }
-    } else if (boxplotCard) {
-        boxplotCard.style.display = 'none';
-    }
+    // ELIMINACIÓN DE LA LÓGICA DEL DIAGRAMA DE CAJA (BOXPLOT)
+    // Se elimina todo el bloque 'if (esCuantitativa && datosRaw.length > 0 && boxplotCard)'
+    // ya que la tarjeta fue eliminada de index.html y la variable chartBoxplot ya no existe.
 
     const graficasEl = document.getElementById('graficas');
     if (graficasEl) {
@@ -699,7 +626,7 @@ async function exportarPDF() {
     Toast.fire({ icon: 'info', title: 'Generando PDF...' });
 
     const isDark = document.body.classList.contains('noche');
-    const chartsActivos = [chartBarras, chartPastel, chartBoxplot].filter(c => c);
+    const chartsActivos = [chartBarras, chartPastel].filter(c => c); // Se elimina chartBoxplot
 
     const setChartPrintColors = (chart, colorText = '#000000', colorGrid = 'rgba(0,0,0,0.3)') => {
         if (!chart || !chart.options) return;
@@ -879,10 +806,7 @@ async function exportarPDF() {
         if (chartBarras) agregarGrafico('graficoBarras', '1. Gráfico de Barras');
         if (chartPastel) agregarGrafico('graficoPastel', '2. Gráfico Circular');
         
-        const boxplotCard = document.getElementById('boxplotCard');
-        if (chartBoxplot && boxplotCard && boxplotCard.style.display !== 'none') {
-            agregarGrafico('graficoBoxplot', '3. Diagrama de Caja (Boxplot)');
-        }
+        // Se elimina la llamada a agregarGrafico para Boxplot
 
         const pageCount = doc.internal.getNumberOfPages();
         for (let i = 1; i <= pageCount; i++) {
@@ -1089,11 +1013,11 @@ function limpiarDatos() {
             
             if (chartBarras) chartBarras.destroy();
             if (chartPastel) chartPastel.destroy();
-            if (chartBoxplot) chartBoxplot.destroy();
+            // if (chartBoxplot) chartBoxplot.destroy(); <-- Eliminado
             
             chartBarras = null;
             chartPastel = null;
-            chartBoxplot = null;
+            // chartBoxplot = null; <-- Eliminado
             
             Toast.fire({ icon: 'success', title: 'Datos limpiados' });
         }
@@ -1115,11 +1039,13 @@ function toggleModoNoche() {
     
     localStorage.setItem('modo-noche', isNoche);
 
-    if (chartBarras || chartPastel || chartBoxplot) {
-        const textColor = isNoche ? '#e6eef8' : '#0f172a';
-        const gridColor = isNoche ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)';
+    const chartsToUpdate = [chartBarras, chartPastel].filter(c => c); // Se elimina chartBoxplot
+    
+    if (chartsToUpdate.length > 0) {
+        const textColor = isNoche ? '#1A360D' : '#1A360D';
+        const gridColor = 'rgba(26,54,13,0.1)';
 
-        [chartBarras, chartPastel, chartBoxplot].forEach(chart => {
+        chartsToUpdate.forEach(chart => {
             if (!chart) return;
             
             if (chart.options.scales) {
