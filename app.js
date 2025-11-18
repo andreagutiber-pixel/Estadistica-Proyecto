@@ -12,8 +12,6 @@ const Toast = Swal.mixin({
 let datosActualesGlobal = {};
 let chartBarras = null;
 let chartPastel = null;
-// Se elimina chartBoxplot
-// let chartBoxplot = null;
 
 // ===================================
 // MÓDULO ESTADÍSTICA (LÓGICA PURA)
@@ -447,7 +445,6 @@ function mostrarTablaFrecuencias(tabla) {
     tablaEl.classList.add('fade-in');
 }
 
-
 // ===================================
 // GENERAR GRÁFICOS
 // ===================================
@@ -458,7 +455,7 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
 
     // Colores basados en la nueva paleta: #1A73E8 #4A90E2 #34C759 #2DB44C #6F6F6F #505050
     const mainColor = '#1A73E8'; // Usado como color primario para barras y líneas
-    const pastelColors = ['#1A73E8', '#4A90E2', '#34C759', '#2DB44C', '#6F6F6F', '#505050']; // Colores rotativos para el pastel
+    const pastelColors = ['#1A73E8', '#4A90E2', '#34C759', '#2DB44C', '#6F6F6F', '#505050']; // Colores rotativos
 
     const isDark = document.body.classList.contains('noche');
     // Usamos el color de texto principal del tema, que es el #1A360D de tu paleta base
@@ -477,7 +474,7 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
                 datasets: [{
                     label: 'Frecuencia',
                     data: dataFi,
-                    // Usando el primer color de la nueva paleta con transparencia para las barras
+                    // Usando RGBA del color primario de la gráfica
                     backgroundColor: 'rgba(26, 115, 232, 0.8)', 
                     borderColor: mainColor,
                     borderWidth: 2,
@@ -512,7 +509,7 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
         const backgroundColors = dataPi.map((_, i) => pastelColors[i % pastelColors.length]);
 
         chartPastel = new Chart(ctxPastel.getContext('2d'), {
-            type: 'pie', // Es Pie, como solicitaste (sin agujero)
+            type: 'polarArea', // <-- CAMBIADO A POLAR AREA (diferente y ordenado)
             data: {
                 labels: labels,
                 datasets: [{
@@ -535,6 +532,12 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
                         }
                     },
                     datalabels: { display: false }
+                },
+                scales: {
+                    r: { // Configuración específica para Polar Area
+                        ticks: { display: false, color: textColor },
+                        grid: { color: gridColor }
+                    }
                 }
             }
         });
@@ -546,8 +549,6 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
         graficasEl.classList.add('fade-in');
     }
 }
-
-
 
 // ===================================
 // EXPORTAR A EXCEL
@@ -624,7 +625,7 @@ async function exportarPDF() {
     Toast.fire({ icon: 'info', title: 'Generando PDF...' });
 
     const isDark = document.body.classList.contains('noche');
-    const chartsActivos = [chartBarras, chartPastel].filter(c => c); // Se elimina chartBoxplot
+    const chartsActivos = [chartBarras, chartPastel].filter(c => c);
 
     const setChartPrintColors = (chart, colorText = '#000000', colorGrid = 'rgba(0,0,0,0.3)') => {
         if (!chart || !chart.options) return;
@@ -802,10 +803,8 @@ async function exportarPDF() {
         };
 
         if (chartBarras) agregarGrafico('graficoBarras', '1. Gráfico de Barras');
-        if (chartPastel) agregarGrafico('graficoPastel', '2. Gráfico Circular');
+        if (chartPastel) agregarGrafico('graficoPastel', '2. Diagrama de Área Polar'); // Título actualizado
         
-        // Se elimina la llamada a agregarGrafico para Boxplot
-
         const pageCount = doc.internal.getNumberOfPages();
         for (let i = 1; i <= pageCount; i++) {
             doc.setPage(i);
@@ -1011,11 +1010,9 @@ function limpiarDatos() {
             
             if (chartBarras) chartBarras.destroy();
             if (chartPastel) chartPastel.destroy();
-            // if (chartBoxplot) chartBoxplot.destroy(); <-- Eliminado
             
             chartBarras = null;
             chartPastel = null;
-            // chartBoxplot = null; <-- Eliminado
             
             Toast.fire({ icon: 'success', title: 'Datos limpiados' });
         }
@@ -1037,10 +1034,11 @@ function toggleModoNoche() {
     
     localStorage.setItem('modo-noche', isNoche);
 
-    const chartsToUpdate = [chartBarras, chartPastel].filter(c => c); // Se elimina chartBoxplot
+    const chartsToUpdate = [chartBarras, chartPastel].filter(c => c);
     
     if (chartsToUpdate.length > 0) {
-        const textColor = isNoche ? '#1A360D' : '#1A360D';
+        // Usando el color de texto principal del tema para las gráficas
+        const textColor = isNoche ? '#1A360D' : '#1A360D'; 
         const gridColor = 'rgba(26,54,13,0.1)';
 
         chartsToUpdate.forEach(chart => {
@@ -1144,5 +1142,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
 
