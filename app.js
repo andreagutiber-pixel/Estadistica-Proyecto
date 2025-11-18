@@ -453,14 +453,13 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
     const dataFi = tabla.map(t => Number(t.fi));
     const dataPi = tabla.map(t => Number(t.pi));
 
-    // Colores basados en la nueva paleta: #1A73E8 #4A90E2 #34C759 #2DB44C #6F6F6F #505050
-    const mainColor = '#1A73E8'; // Usado como color primario para barras y líneas
-    const pastelColors = ['#1A73E8', '#4A90E2', '#34C759', '#2DB44C', '#6F6F6F', '#505050']; // Colores rotativos
+    // Paleta combinada de 12 colores:
+    const mainColor = '#1A73E8'; 
+    const pastelColors = ['#1A73E8', '#4A90E2', '#34C759', '#2DB44C', '#6F6F6F', '#505050', '#6FB1FF', '#0F5FBF', '#1E8F45', '#A5F2C1', '#A9A9A9', '#E8E8E8'];
 
     const isDark = document.body.classList.contains('noche');
-    // Usamos el color de texto principal del tema, que es el #1A360D de tu paleta base
     const textColor = isDark ? '#1A360D' : '#1A360D'; 
-    const gridColor = 'rgba(26,54,13,0.1)'; // Líneas de grid muy sutiles
+    const gridColor = 'rgba(26,54,13,0.1)'; 
 
     if (chartBarras) chartBarras.destroy();
     if (chartPastel) chartPastel.destroy();
@@ -509,14 +508,14 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
         const backgroundColors = dataPi.map((_, i) => pastelColors[i % pastelColors.length]);
 
         chartPastel = new Chart(ctxPastel.getContext('2d'), {
-            type: 'polarArea', // <-- CAMBIADO A POLAR AREA (diferente y ordenado)
+            type: 'pie', // <-- Revertido a Pie Chart (estilo completo)
             data: {
                 labels: labels,
                 datasets: [{
                     data: dataPi,
-                    backgroundColor: backgroundColors,
+                    backgroundColor: backgroundColors, // Usando la paleta de 12 colores
                     borderWidth: 2,
-                    borderColor: '#F7F4EA' // Borde claro de la tabla inferior
+                    borderColor: '#F7F4EA' 
                 }]
             },
             options: {
@@ -532,12 +531,6 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
                         }
                     },
                     datalabels: { display: false }
-                },
-                scales: {
-                    r: { // Configuración específica para Polar Area
-                        ticks: { display: false, color: textColor },
-                        grid: { color: gridColor }
-                    }
                 }
             }
         });
@@ -803,7 +796,7 @@ async function exportarPDF() {
         };
 
         if (chartBarras) agregarGrafico('graficoBarras', '1. Gráfico de Barras');
-        if (chartPastel) agregarGrafico('graficoPastel', '2. Diagrama de Área Polar'); // Título actualizado
+        if (chartPastel) agregarGrafico('graficoPastel', '2. Gráfico Circular');
         
         const pageCount = doc.internal.getNumberOfPages();
         for (let i = 1; i <= pageCount; i++) {
@@ -1142,4 +1135,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-
