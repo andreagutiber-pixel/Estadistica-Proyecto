@@ -447,6 +447,7 @@ function mostrarTablaFrecuencias(tabla) {
     tablaEl.classList.add('fade-in');
 }
 
+
 // ===================================
 // GENERAR GRÁFICOS
 // ===================================
@@ -455,18 +456,17 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
     const dataFi = tabla.map(t => Number(t.fi));
     const dataPi = tabla.map(t => Number(t.pi));
 
-    // Colores base definidos por el usuario
-    const mainColor = '#1A360D'; // linea de la grafica (Texto principal)
-    const pastelColors = ['#71AABD', '#42921D', '#24CB80', '#71AABD']; // Gráficas de pastel (Ajuste de repetición)
+    // Colores basados en la nueva paleta: #1A73E8 #4A90E2 #34C759 #2DB44C #6F6F6F #505050
+    const mainColor = '#1A73E8'; // Usado como color primario para barras y líneas
+    const pastelColors = ['#1A73E8', '#4A90E2', '#34C759', '#2DB44C', '#6F6F6F', '#505050']; // Colores rotativos para el pastel
 
     const isDark = document.body.classList.contains('noche');
-    // Usamos el color de texto principal del tema, ya que el fondo es claro
+    // Usamos el color de texto principal del tema, que es el #1A360D de tu paleta base
     const textColor = isDark ? '#1A360D' : '#1A360D'; 
     const gridColor = 'rgba(26,54,13,0.1)'; // Líneas de grid muy sutiles
 
     if (chartBarras) chartBarras.destroy();
     if (chartPastel) chartPastel.destroy();
-    // if (chartBoxplot) chartBoxplot.destroy(); <-- Eliminado
 
     const ctxBarras = document.getElementById('graficoBarras');
     if (ctxBarras) {
@@ -477,9 +477,9 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
                 datasets: [{
                     label: 'Frecuencia',
                     data: dataFi,
-                    // Color de barra principal ajustado al tema
-                    backgroundColor: 'rgba(64, 104, 104, 0.8)', 
-                    borderColor: '#406868',
+                    // Usando el primer color de la nueva paleta con transparencia para las barras
+                    backgroundColor: 'rgba(26, 115, 232, 0.8)', 
+                    borderColor: mainColor,
                     borderWidth: 2,
                     borderRadius: 6
                 }]
@@ -512,110 +512,7 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
         const backgroundColors = dataPi.map((_, i) => pastelColors[i % pastelColors.length]);
 
         chartPastel = new Chart(ctxPastel.getContext('2d'), {
-            type: 'pie', // <-- CAMBIADO de 'doughnut' a 'pie' (completo)
-            data: {
-                labels: labels,
-                datasets: [{
-                    data: dataPi,
-                    backgroundColor: backgroundColors,
-                    borderWidth: 2,
-                    borderColor: '#F7F4EA' // Borde claro de la tabla inferior
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: 'bottom',
-                        labels: { 
-                            color: textColor,
-                            boxWidth: 15,
-                            padding: 10
-                        }
-                    },
-                    datalabels: { display: false }
-                }
-            }
-        });
-    }
-
-    // ELIMINACIÓN DE LA LÓGICA DEL DIAGRAMA DE CAJA (BOXPLOT)
-    // Se elimina todo el bloque 'if (esCuantitativa && datosRaw.length > 0 && boxplotCard)'
-    // ya que la tarjeta fue eliminada de index.html y la variable chartBoxplot ya no existe.
-
-    const graficasEl = document.getElementById('graficas');
-    if (graficasEl) {
-        graficasEl.style.display = 'block';
-        graficasEl.classList.add('fade-in');
-    }
-}
-
-// ===================================
-// GENERAR GRÁFICOS
-// ===================================
-function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
-    const labels = tabla.map(t => String(t.x));
-    const dataFi = tabla.map(t => Number(t.fi));
-    const dataPi = tabla.map(t => Number(t.pi));
-
-    // Colores base definidos por el usuario
-    const mainColor = '#1A360D'; // linea de la grafica (Texto principal)
-    const pastelColors = ['#71AABD', '#42921D', '#24CB80', '#71AABD']; // Gráficas de pastel (Ajuste de repetición)
-
-    const isDark = document.body.classList.contains('noche');
-    // Usamos el color de texto principal del tema, ya que el fondo es claro
-    const textColor = isDark ? '#1A360D' : '#1A360D'; 
-    const gridColor = 'rgba(26,54,13,0.1)'; // Líneas de grid muy sutiles
-
-    if (chartBarras) chartBarras.destroy();
-    if (chartPastel) chartPastel.destroy();
-
-    const ctxBarras = document.getElementById('graficoBarras');
-    if (ctxBarras) {
-        chartBarras = new Chart(ctxBarras.getContext('2d'), {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Frecuencia',
-                    data: dataFi,
-                    // Color de barra principal ajustado al tema
-                    backgroundColor: 'rgba(64, 104, 104, 0.8)', 
-                    borderColor: '#406868',
-                    borderWidth: 2,
-                    borderRadius: 6
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { display: false },
-                    datalabels: { display: false }
-                },
-                scales: {
-                    y: { 
-                        beginAtZero: true,
-                        ticks: { color: textColor },
-                        grid: { color: gridColor }
-                    },
-                    x: {
-                        ticks: { color: textColor },
-                        grid: { display: false }
-                    }
-                }
-            }
-        });
-    }
-
-    const ctxPastel = document.getElementById('graficoPastel');
-    if (ctxPastel) {
-        // Asignación de colores de pastel
-        const backgroundColors = dataPi.map((_, i) => pastelColors[i % pastelColors.length]);
-
-        chartPastel = new Chart(ctxPastel.getContext('2d'), {
-            type: 'pie', // <--- ¡CORREGIDO A PIE para ser completo!
+            type: 'pie', // Es Pie, como solicitaste (sin agujero)
             data: {
                 labels: labels,
                 datasets: [{
@@ -649,6 +546,8 @@ function generarGraficos(tabla, datosRaw = [], esCuantitativa) {
         graficasEl.classList.add('fade-in');
     }
 }
+
+
 
 // ===================================
 // EXPORTAR A EXCEL
@@ -1245,4 +1144,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
 
