@@ -104,6 +104,106 @@
             >
                 🎲 Generar Datos Aleatorios
             </button>
+        </div><!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Analizador estadístico con detección automática de tipo de variable">
+    <meta name="keywords" content="estadística, análisis de datos, gráficos, frecuencias">
+    <meta name="author" content="Jhonar De Arco, Sally Gutiérrez & Martin Solano">
+    
+    <title>Analizador Estadístico Profesional</title>
+
+    <link rel="stylesheet" href="estilos.css">
+    
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+</head>
+<body>
+
+<header class="site-header">
+    <div class="header-left">
+        <h1> Analizador De Datos Estadísticos </h1>
+        <p class="subtitulo">Proyecto Realizado Por: <strong>Jhonar De Arco, Sally Gutiérrez &amp; Martin Solano</strong></p>
+    </div>
+
+    
+<main class="layout">
+
+    <section class="card card-full" aria-labelledby="descripcion-titulo">
+        <h2 id="descripcion-titulo"> Descripción del Sistema</h2>
+        <p>
+            <strong>Analizador estadístico</strong> que detecta automáticamente el tipo de variable 
+            (cuantitativa/cualitativa, nominal/ordinal) y calcula todos los estadísticos relevantes.
+            Incluye análisis visual con gráficos interactivos, tabla de frecuencias, y exportación a PDF/Excel.
+        </p>
+    </section>
+
+    <section class="card card-col" aria-labelledby="ingreso-titulo">
+        <h3 id="ingreso-titulo">📝 Ingreso de Datos</h3>
+        <label for="datosInput" class="label">
+            Introduce números o texto separados por comas, espacios o saltos de línea
+        </label>
+        <textarea 
+            id="datosInput" 
+            placeholder="Ejemplo: 5, 8, 10, 12, 15&#10;o&#10;Malo, Bueno, Regular, Excelente"
+            aria-describedby="datos-ayuda"
+        ></textarea>
+        <span id="datos-ayuda" class="sr-only">
+            Ingresa tus datos separados por comas, espacios o saltos de línea
+        </span>
+        
+        <div class="tipo-dato">
+            <label for="tipoDato"><strong> Tipo de cálculo:</strong></label>
+            <select id="tipoDato" aria-label="Seleccionar tipo de cálculo estadístico">
+                <option value="muestral">Muestral (n-1) - Encuestas/Muestras</option>
+                <option value="poblacional">Poblacional (N) - Censos/Totales</option>
+            </select>
+        </div>
+
+        <div class="actions">
+            <button id="procesarBtn" class="btn" aria-label="Analizar datos ingresados">
+                🚀 Analizar Datos
+            </button>
+            <button id="limpiarBtn" class="btn btn-outline" aria-label="Limpiar todos los datos">
+                🗑️ Limpiar
+            </button>
+        </div>
+    </section>
+
+    <section class="card card-col" aria-labelledby="importar-titulo">
+        <h3 id="importar-titulo">📥 Importar Archivos</h3>
+
+        <div 
+            class="drop-zone" 
+            id="dropZone" 
+            role="button" 
+            tabindex="0"
+            aria-label="Zona para arrastrar archivos o hacer clic para seleccionar"
+        >
+            <p style="margin:0; font-size:1.1rem;">📎 Arrastra archivos aquí</p>
+            <p style="margin:8px 0 0; color:var(--muted); font-size:0.9rem;">
+                o haz clic para seleccionar
+            </p>
+            <input 
+                type="file" 
+                id="archivoInput" 
+                accept=".txt, .csv, .xlsx, .xls, .json" 
+                style="display:none;"
+                aria-label="Seleccionar archivo para importar"
+            >
+        </div>
+
+        <div style="margin-top:16px; padding:12px; background:rgba(46,125,50,0.05); border-radius:8px; border:1px solid rgba(46,125,50,0.2);">
+            <button 
+                id="demoBtn" 
+                class="btn btn-green" 
+                style="width:100%;"
+                aria-label="Generar datos aleatorios de ejemplo"
+            >
+                🎲 Generar Datos Aleatorios
+            </button>
         </div>
 
         <div class="actions" style="margin-top:16px;">
