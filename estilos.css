@@ -30,13 +30,19 @@
     --border: rgba(26,54,13,0.2); 
     --radius: 12px;
 
-    /* Nuevos colores para las gráficas (Definición en CSS) */
+    /* Nuevos colores para las gráficas (Paleta Combinada) */
     --chart-color-1: #1A73E8;
     --chart-color-2: #4A90E2;
     --chart-color-3: #34C759;
     --chart-color-4: #2DB44C;
     --chart-color-5: #6F6F6F;
     --chart-color-6: #505050;
+    --chart-color-7: #6FB1FF;
+    --chart-color-8: #0F5FBF;
+    --chart-color-9: #1E8F45;
+    --chart-color-10: #A5F2C1;
+    --chart-color-11: #A9A9A9;
+    --chart-color-12: #E8E8E8;
 }
 
 * {
